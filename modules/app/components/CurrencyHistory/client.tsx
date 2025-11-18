@@ -107,13 +107,12 @@ export function CurrencyHistoryClient({
           })}
         </div>
       </CardHeader>
-      <CardContent className="px-2 md:p-6">
+      <CardContent className="px-2 **:outline-none md:p-6">
         <ChartContainer
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
         >
           <LineChart
-            accessibilityLayer
             data={chartData}
             margin={{
               left: 12,
