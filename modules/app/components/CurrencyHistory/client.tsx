@@ -67,7 +67,7 @@ export function CurrencyHistoryClient({
       <CardHeader className="flex flex-col gap-0 border-b p-0 md:flex-row md:items-center">
         <div className="flex grow flex-col justify-center gap-1 p-4">
           <CardTitle>Exchange rate development</CardTitle>
-          <CardDescription>
+          <CardDescription className="text-balance">
             Shows the development from{' '}
             {formatDate({ date: new Date(data.start_date) })} to{' '}
             {formatDate({ date: new Date(data.end_date) })}
