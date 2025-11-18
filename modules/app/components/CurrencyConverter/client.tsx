@@ -68,13 +68,13 @@ export function CurrencyConverterClient({
           </EmptyMedia>
           <EmptyTitle>Convert {data.base}</EmptyTitle>
         </EmptyHeader>
-        <EmptyContent>
+        <EmptyContent className="max-w-xs">
           <Form {...form}>
             <FormField
               control={form.control}
               name="amount"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Amount</FormLabel>
                   <InputGroup>
                     <InputGroupInput asChild>

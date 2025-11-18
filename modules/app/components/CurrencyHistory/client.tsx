@@ -15,7 +15,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { formatDate } from "@/lib/format";
+import { formatDate, formatNumber } from "@/lib/format";
 import { useState } from "react";
 import { currencies } from "../../schemas/currency";
 import { IHistoricExchangeRate } from "../../schemas/historic";
@@ -92,7 +92,7 @@ export function CurrencyHistoryClient({
                   {chartConfig[chart].label}
                 </span>
                 <span className="text-lg leading-none font-bold md:text-3xl">
-                  {total[key as keyof typeof total].toLocaleString()}
+                  {formatNumber({ number: total[key as keyof typeof total] })}
                 </span>
               </button>
             );

@@ -1,4 +1,5 @@
 import { ZodTypeAny, z } from "zod";
+import { DigestError } from "./error";
 
 type IRequestCallUrl = `/${string}`;
 
@@ -31,7 +32,10 @@ export async function fetchWithOrigin<TSchema extends ZodTypeAny>(
 
   if (!result.success) {
     // we could return status: error, but to have centralized error handling in <AppAwait /> we throw it here
-    throw new Error(result.error.message);
+    throw new DigestError(result.error.message, {
+      request: finalUrl,
+      response: res.statusText,
+    });
   }
 
   return { status: "success" as const, data: result.data };

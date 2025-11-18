@@ -1,16 +1,14 @@
+import { AppAwait } from "@/components/AppAwait";
 import { AppError } from "@/components/AppError";
 import { AppLoading } from "@/components/AppLoading";
-import { AppAwait } from "@/components/AppAwait";
 import { getMetaTitle } from "@/lib/metadata";
 import { awaitParams } from "@/lib/params";
 import { IWithGenericParams } from "@/lib/types";
-import { CurrencyConverter } from "@/modules/app/components/CurrencyConverter";
-import { CurrencyHistory } from "@/modules/app/components/CurrencyHistory";
+import { CurrencyPage } from "@/modules/app/components/CurrencyPage";
 import { currencies, CurrencySchema } from "@/modules/app/schemas/currency";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { safeParse } from "zod";
-import { CurrencyPage } from "@/modules/app/components/CurrencyPage";
 
 type IProps = IWithGenericParams<{ from: string }>;
 
