@@ -42,8 +42,10 @@ export function CurrencyHistoryClient({
 }: {
   data: IHistoricExchangeRate
 }) {
+  const values = Object.values(data.rates)
+
   const total = currencies.reduce((acc: Record<string, number>, curr) => {
-    const price = Object.values(data.rates).at(-1)?.[curr] ?? 0
+    const price = values[values.length - 1]?.[curr] ?? 0
     if (price) {
       acc[curr] = price
     }
@@ -68,31 +70,31 @@ export function CurrencyHistoryClient({
           </CardDescription>
         </div>
         <div className="flex max-md:w-full">
-          {Object.keys(total).map((key) => {
-            const chart = key as keyof typeof chartConfig
-            const isActive = activeCharts.includes(chart)
+          {Object.keys(total).map((item) => {
+            const typedKey = item as keyof typeof chartConfig
+            const isActive = activeCharts.includes(typedKey)
             return (
               <button
-                key={chart}
+                key={typedKey}
                 data-active={isActive}
                 className="data-[active=true]:bg-muted/50 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l md:border-t-0 md:border-l md:px-8 md:py-6"
                 onClick={() =>
                   setActiveCharts((prev) => {
                     return [
-                      ...prev.filter((item) => item !== chart),
-                      ...(isActive ? [] : [chart]),
+                      ...prev.filter((item) => item !== typedKey),
+                      ...(isActive ? [] : [typedKey]),
                     ]
                   })
                 }
               >
                 <span
                   className="text-xs"
-                  style={{ color: chartConfig[chart].color }}
+                  style={{ color: chartConfig[typedKey].color }}
                 >
-                  {chartConfig[chart].label}
+                  {chartConfig[typedKey].label}
                 </span>
                 <span className="text-lg leading-none font-bold md:text-3xl">
-                  {formatNumber({ number: total[key as keyof typeof total] })}
+                  {formatNumber({ number: total[typedKey] })}
                 </span>
               </button>
             )
@@ -133,13 +135,13 @@ export function CurrencyHistoryClient({
                 />
               }
             />
-            {activeCharts.map((chart) => {
+            {activeCharts.map((item) => {
               return (
                 <Line
-                  key={chart}
-                  dataKey={chart}
+                  key={item}
+                  dataKey={item}
                   type="monotone"
-                  stroke={`var(--color-${chart})`}
+                  stroke={`var(--color-${item})`}
                   strokeWidth={2}
                   dot={false}
                 />
