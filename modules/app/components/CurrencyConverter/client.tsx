@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowLeftRight, ChevronDown } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import { useForm, useWatch } from 'react-hook-form'
 
 import { AppNumberInput } from '@/components/AppNumberInput'

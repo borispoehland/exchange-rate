@@ -20,21 +20,21 @@ import {
 } from '@/components/ui/chart'
 import { formatDate, formatNumber } from '@/lib/format'
 
-import { currencies } from '../../schemas/currency'
+import type { ICurrency } from '../../schemas/currency'
 import type { IHistoricExchangeRate } from '../../schemas/historic'
 
 const chartConfig = {
   USD: {
     label: 'USD',
-    color: 'var(--chart-2)',
+    color: 'var(--chart-1)',
   },
   EUR: {
     label: 'EUR',
-    color: 'var(--chart-1)',
+    color: 'var(--chart-3)',
   },
   CHF: {
     label: 'CHF',
-    color: 'var(--chart-4)',
+    color: 'var(--chart-2)',
   },
 } satisfies ChartConfig
 
@@ -45,13 +45,16 @@ export function CurrencyHistoryClient({
 }) {
   const values = Object.values(data.rates)
 
-  const total = currencies.reduce((acc: Record<string, number>, curr) => {
-    const price = values[values.length - 1]?.[curr] ?? 0
-    if (price) {
-      acc[curr] = price
-    }
-    return acc
-  }, {})
+  const total = Object.keys(values[0]).reduce(
+    (acc: Record<string, number>, curr) => {
+      const price = values[values.length - 1]?.[curr as ICurrency] ?? 0
+      if (price) {
+        acc[curr] = price
+      }
+      return acc
+    },
+    {}
+  )
 
   const [activeCharts, setActiveCharts] = useState<string[]>(Object.keys(total))
 
@@ -80,7 +83,7 @@ export function CurrencyHistoryClient({
                 data-active={isActive}
                 variant={null}
                 size={null}
-                className="data-[active=true]:bg-muted/50 grow flex-col gap-1 rounded-none border-t px-6 py-4 text-left even:border-l md:border-t-0 md:border-l md:px-8 md:py-6"
+                className="data-[active=true]:bg-muted/40 grow flex-col gap-1 rounded-none border-t px-6 py-4 text-left even:border-l md:border-t-0 md:border-l md:px-8 md:py-6"
                 onClick={() =>
                   setActiveCharts((prev) => {
                     return [
@@ -91,7 +94,7 @@ export function CurrencyHistoryClient({
                 }
               >
                 <span
-                  className="text-xs"
+                  className="text-xs font-semibold"
                   style={{ color: chartConfig[typedKey].color }}
                 >
                   {chartConfig[typedKey].label}
