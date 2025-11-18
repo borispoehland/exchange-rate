@@ -57,8 +57,8 @@ export function CurrencyHistoryClient({
   });
 
   return (
-    <Card className="py-4 md:py-0 m-4">
-      <CardHeader className="flex border-b md:items-center !p-0 flex-col md:flex-row">
+    <Card className="py-1 md:py-0 m-4">
+      <CardHeader className="flex border-b md:items-center gap-0 p-0 flex-col md:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 p-4">
           <CardTitle>Exchange rate development</CardTitle>
           <CardDescription>

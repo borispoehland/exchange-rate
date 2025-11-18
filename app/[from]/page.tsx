@@ -10,6 +10,7 @@ import { currencies, CurrencySchema } from "@/modules/app/schemas/currency";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { safeParse } from "zod";
+import { CurrencyPage } from "@/modules/app/components/CurrencyPage";
 
 type IProps = IWithGenericParams<{ from: string }>;
 
@@ -42,12 +43,7 @@ export default function Page({ params }: IProps) {
           if (!result.success) {
             return notFound();
           }
-          return (
-            <>
-              <CurrencyConverter fromCurrency={result.data} />
-              <CurrencyHistory fromCurrency={result.data} />
-            </>
-          );
+          return <CurrencyPage fromCurrency={result.data} />;
         }}
       </AppAwait>
     </Suspense>

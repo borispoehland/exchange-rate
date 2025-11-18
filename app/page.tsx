@@ -1,6 +1,5 @@
 import { getMetaTitle } from "@/lib/metadata";
-import { CurrencyConverter } from "@/modules/app/components/CurrencyConverter";
-import { CurrencyHistory } from "@/modules/app/components/CurrencyHistory";
+import { CurrencyPage } from "@/modules/app/components/CurrencyPage";
 
 const defaultCurrency = "USD";
 
@@ -9,10 +8,5 @@ export const metadata = {
 };
 
 export default function Home() {
-  return (
-    <>
-      <CurrencyConverter fromCurrency={defaultCurrency} />
-      <CurrencyHistory fromCurrency={defaultCurrency} />
-    </>
-  );
+  return <CurrencyPage fromCurrency={defaultCurrency} />;
 }
