@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 
-import { CartesianGrid, Line, LineChart, XAxis } from 'recharts'
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'
 
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -61,7 +62,7 @@ export function CurrencyHistoryClient({
   return (
     <Card className="m-4 py-1 md:py-0">
       <CardHeader className="flex flex-col gap-0 border-b p-0 md:flex-row md:items-center">
-        <div className="flex flex-1 flex-col justify-center gap-1 p-4">
+        <div className="flex grow flex-col justify-center gap-1 p-4">
           <CardTitle>Exchange rate development</CardTitle>
           <CardDescription>
             Shows the development from{' '}
@@ -74,10 +75,12 @@ export function CurrencyHistoryClient({
             const typedKey = item as keyof typeof chartConfig
             const isActive = activeCharts.includes(typedKey)
             return (
-              <button
+              <Button
                 key={typedKey}
                 data-active={isActive}
-                className="data-[active=true]:bg-muted/50 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l md:border-t-0 md:border-l md:px-8 md:py-6"
+                variant={null}
+                size={null}
+                className="data-[active=true]:bg-muted/50 grow flex-col gap-1 rounded-none border-t px-6 py-4 text-left even:border-l md:border-t-0 md:border-l md:px-8 md:py-6"
                 onClick={() =>
                   setActiveCharts((prev) => {
                     return [
@@ -96,7 +99,7 @@ export function CurrencyHistoryClient({
                 <span className="text-lg leading-none font-bold md:text-3xl">
                   {formatNumber({ number: total[typedKey] })}
                 </span>
-              </button>
+              </Button>
             )
           })}
         </div>
@@ -115,6 +118,20 @@ export function CurrencyHistoryClient({
             }}
           >
             <CartesianGrid vertical={false} />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              width={30}
+              domain={[
+                (dataMin: number) => dataMin * 0.95,
+                (dataMax: number) => dataMax * 1.05,
+              ]}
+              tickFormatter={(value) => {
+                return Intl.NumberFormat('de-DE', {
+                  maximumFractionDigits: 2,
+                }).format(value)
+              }}
+            />
             <XAxis
               dataKey="date"
               tickLine={false}

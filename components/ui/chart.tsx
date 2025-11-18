@@ -63,7 +63,7 @@ function ChartContainer({
         {...props}
       >
         <ChartStyle id={chartId} config={config} />
-        <RechartsPrimitive.ResponsiveContainer>
+        <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
           {children}
         </RechartsPrimitive.ResponsiveContainer>
       </div>
@@ -108,19 +108,19 @@ const ChartTooltip = RechartsPrimitive.Tooltip
 
 function ChartTooltipContent({
   active,
-  payload,
   className,
   indicator = 'dot',
   hideLabel = false,
   hideIndicator = false,
-  label,
   labelFormatter,
   labelClassName,
   formatter,
   color,
   nameKey,
   labelKey,
-}: React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
+  payload,
+  label,
+}: Partial<RechartsPrimitive.TooltipContentProps<string, string>> &
   React.ComponentProps<'div'> & {
     hideLabel?: boolean
     hideIndicator?: boolean
@@ -190,7 +190,7 @@ function ChartTooltipContent({
 
             return (
               <div
-                key={item.dataKey}
+                key={item.dataKey?.toString()}
                 className={cn(
                   '[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5',
                   indicator === 'dot' && 'items-center'
@@ -237,7 +237,7 @@ function ChartTooltipContent({
                         </span>
                       </div>
                       {item.value && (
-                        <span className="text-foreground font-mono font-medium tabular-nums">
+                        <span className="text-foreground font-medium tabular-nums">
                           {formatNumber({ number: Number(item.value) })}
                         </span>
                       )}
@@ -261,7 +261,10 @@ function ChartLegendContent({
   verticalAlign = 'bottom',
   nameKey,
 }: React.ComponentProps<'div'> &
-  Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
+  Pick<
+    RechartsPrimitive.DefaultLegendContentProps,
+    'payload' | 'verticalAlign'
+  > & {
     hideIcon?: boolean
     nameKey?: string
   }) {

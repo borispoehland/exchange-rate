@@ -1,8 +1,11 @@
 'use client'
 
-import { type ComponentProps } from 'react'
+import { useState, type ComponentProps } from 'react'
 
-import { Input } from './ui/input'
+import { formatNumber } from '@/lib/format'
+import { cn } from '@/lib/utils'
+
+import { Input, inputClass } from './ui/input'
 
 function getNumberInputValue(value: string, isDecimalsAllowed: boolean) {
   let newValue
@@ -38,16 +41,19 @@ function capMaxValue({ value, max }: { value: string; max: number }) {
   return newValue
 }
 
-export function NumberInput({
+export function AppNumberInput({
   isDecimalsAllowed = true,
   max,
+  className,
   ...props
 }: ComponentProps<typeof Input> & {
   max?: number
   isDecimalsAllowed?: boolean
 }) {
+  const [isFocused, setIsFocused] = useState(false)
+
   return (
-    <div className="relative flex grow flex-col">
+    <div className="relative">
       <Input
         inputMode={isDecimalsAllowed ? 'decimal' : 'numeric'}
         {...props}
@@ -56,7 +62,28 @@ export function NumberInput({
           const value = max ? capMaxValue({ value: number, max }) : number
           props.onChange?.({ ...e, target: { ...e.target, value } })
         }}
+        onFocus={(e) => {
+          props.onFocus?.(e)
+          setIsFocused(true)
+        }}
+        onBlur={(e) => {
+          props.onBlur?.(e)
+          setIsFocused(false)
+        }}
+        className={cn(!isFocused && 'text-transparent', className)}
       />
+      {props.value && (
+        <div
+          className={cn(
+            inputClass,
+            'pointer-events-none absolute inset-0 flex h-auto items-center',
+            className,
+            isFocused && 'text-transparent'
+          )}
+        >
+          {formatNumber({ number: Number(props.value) })}
+        </div>
+      )}
     </div>
   )
 }

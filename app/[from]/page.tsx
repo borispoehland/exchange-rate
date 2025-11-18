@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { safeParse } from 'zod'
@@ -6,7 +7,9 @@ import { safeParse } from 'zod'
 import { AppAwait } from '@/components/AppAwait'
 import { AppError } from '@/components/AppError'
 import { AppLoading } from '@/components/AppLoading'
-import { getMetaTitle } from '@/lib/metadata'
+import { flagsMappers } from '@/lib/flags'
+import { HOST } from '@/lib/host'
+import { getMetaIcon, getMetaTitle } from '@/lib/metadata'
 import { awaitParams } from '@/lib/params'
 import type { IWithGenericParams } from '@/lib/types'
 import { CurrencyPage } from '@/modules/app/components/CurrencyPage'
@@ -14,7 +17,7 @@ import { currencies, CurrencySchema } from '@/modules/app/schemas/currency'
 
 type IProps = IWithGenericParams<{ from: string }>
 
-export async function generateMetadata({ params }: IProps) {
+export async function generateMetadata({ params }: IProps): Promise<Metadata> {
   const { from } = await params
   const result = safeParse(CurrencySchema, from)
   if (!result.success) {
@@ -22,6 +25,7 @@ export async function generateMetadata({ params }: IProps) {
   }
   return {
     title: getMetaTitle({ currency: result.data }),
+    icons: getMetaIcon({ currency: result.data }),
   }
 }
 

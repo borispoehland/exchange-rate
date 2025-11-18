@@ -1,12 +1,13 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeftRight, ChevronDown } from 'lucide-react'
 import { useForm, useWatch } from 'react-hook-form'
 
-import { NumberInput } from '@/components/AppNumberInput'
+import { AppNumberInput } from '@/components/AppNumberInput'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -35,6 +36,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group'
+import { flagsMappers } from '@/lib/flags'
 import { formatDate, formatNumber } from '@/lib/format'
 import { cn } from '@/lib/utils'
 
@@ -70,7 +72,12 @@ export function CurrencyConverterClient({
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <ArrowLeftRight />
+            <Image
+              src={flagsMappers[data.base].icon}
+              width={24}
+              height={24}
+              alt={data.base}
+            />
           </EmptyMedia>
           <EmptyTitle>Convert {data.base}</EmptyTitle>
         </EmptyHeader>
@@ -85,10 +92,8 @@ export function CurrencyConverterClient({
                   <InputGroup>
                     <InputGroupInput asChild>
                       <FormControl>
-                        <NumberInput
-                          placeholder={`0 - ${formatNumber({
-                            number: MAX_VALUE,
-                          })}`}
+                        <AppNumberInput
+                          placeholder="1"
                           max={MAX_VALUE}
                           {...field}
                         />
