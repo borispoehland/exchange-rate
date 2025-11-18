@@ -60,7 +60,7 @@ export function CurrencyConverterClient({
   const amount = Number(values?.amount) || 1;
 
   return (
-    <div className="grid md:grid-cols-2 max-w-[900px] mx-auto items-center">
+    <div className="grid md:grid-cols-2 max-w-[900px] w-full mx-auto items-center">
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
@@ -68,7 +68,7 @@ export function CurrencyConverterClient({
           </EmptyMedia>
           <EmptyTitle>Convert {data.base}</EmptyTitle>
         </EmptyHeader>
-        <EmptyContent className="max-w-xs">
+        <EmptyContent className="max-w-[280px]">
           <Form {...form}>
             <FormField
               control={form.control}
