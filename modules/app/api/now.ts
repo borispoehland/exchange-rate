@@ -1,7 +1,7 @@
-import { cacheLife } from "next/cache";
+import { cacheLife } from 'next/cache'
 
 export async function getNow() {
-  "use cache";
-  cacheLife({ revalidate: 300 });
-  return new Date();
+  'use cache'
+  cacheLife({ revalidate: 300 })
+  return new Date()
 }

@@ -1,6 +1,8 @@
-"use client";
+'use client'
 
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { useState } from 'react'
+
+import { CartesianGrid, Line, LineChart, XAxis } from 'recharts'
 
 import {
   Card,
@@ -8,69 +10,67 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card'
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { formatDate, formatNumber } from "@/lib/format";
-import { useState } from "react";
-import { currencies } from "../../schemas/currency";
-import { IHistoricExchangeRate } from "../../schemas/historic";
+  type ChartConfig,
+} from '@/components/ui/chart'
+import { formatDate, formatNumber } from '@/lib/format'
+
+import { currencies } from '../../schemas/currency'
+import type { IHistoricExchangeRate } from '../../schemas/historic'
 
 const chartConfig = {
   USD: {
-    label: "USD",
-    color: "var(--chart-2)",
+    label: 'USD',
+    color: 'var(--chart-2)',
   },
   EUR: {
-    label: "EUR",
-    color: "var(--chart-1)",
+    label: 'EUR',
+    color: 'var(--chart-1)',
   },
   CHF: {
-    label: "CHF",
-    color: "var(--chart-4)",
+    label: 'CHF',
+    color: 'var(--chart-4)',
   },
-} satisfies ChartConfig;
+} satisfies ChartConfig
 
 export function CurrencyHistoryClient({
   data,
 }: {
-  data: IHistoricExchangeRate;
+  data: IHistoricExchangeRate
 }) {
   const total = currencies.reduce((acc: Record<string, number>, curr) => {
-    const price = Object.values(data.rates).at(-1)?.[curr] ?? 0;
+    const price = Object.values(data.rates).at(-1)?.[curr] ?? 0
     if (price) {
-      acc[curr] = price;
+      acc[curr] = price
     }
-    return acc;
-  }, {});
+    return acc
+  }, {})
 
-  const [activeCharts, setActiveCharts] = useState<string[]>(
-    Object.keys(total)
-  );
+  const [activeCharts, setActiveCharts] = useState<string[]>(Object.keys(total))
 
   const chartData = Object.entries(data.rates).map(([key, value]) => {
-    return { ...value, date: key };
-  });
+    return { ...value, date: key }
+  })
 
   return (
-    <Card className="py-1 md:py-0 m-4">
-      <CardHeader className="flex border-b md:items-center gap-0 p-0 flex-col md:flex-row">
+    <Card className="m-4 py-1 md:py-0">
+      <CardHeader className="flex flex-col gap-0 border-b p-0 md:flex-row md:items-center">
         <div className="flex flex-1 flex-col justify-center gap-1 p-4">
           <CardTitle>Exchange rate development</CardTitle>
           <CardDescription>
-            Shows the development from{" "}
-            {formatDate({ date: new Date(data.start_date) })} to{" "}
+            Shows the development from{' '}
+            {formatDate({ date: new Date(data.start_date) })} to{' '}
             {formatDate({ date: new Date(data.end_date) })}
           </CardDescription>
         </div>
         <div className="flex max-md:w-full">
           {Object.keys(total).map((key) => {
-            const chart = key as keyof typeof chartConfig;
-            const isActive = activeCharts.includes(chart);
+            const chart = key as keyof typeof chartConfig
+            const isActive = activeCharts.includes(chart)
             return (
               <button
                 key={chart}
@@ -81,7 +81,7 @@ export function CurrencyHistoryClient({
                     return [
                       ...prev.filter((item) => item !== chart),
                       ...(isActive ? [] : [chart]),
-                    ];
+                    ]
                   })
                 }
               >
@@ -95,7 +95,7 @@ export function CurrencyHistoryClient({
                   {formatNumber({ number: total[key as keyof typeof total] })}
                 </span>
               </button>
-            );
+            )
           })}
         </div>
       </CardHeader>
@@ -120,7 +120,7 @@ export function CurrencyHistoryClient({
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                return formatDate({ date: new Date(value) });
+                return formatDate({ date: new Date(value) })
               }}
             />
             <ChartTooltip
@@ -128,7 +128,7 @@ export function CurrencyHistoryClient({
                 <ChartTooltipContent
                   className="w-[150px]"
                   labelFormatter={(value) => {
-                    return formatDate({ date: new Date(value) });
+                    return formatDate({ date: new Date(value) })
                   }}
                 />
               }
@@ -143,11 +143,11 @@ export function CurrencyHistoryClient({
                   strokeWidth={2}
                   dot={false}
                 />
-              );
+              )
             })}
           </LineChart>
         </ChartContainer>
       </CardContent>
     </Card>
-  );
+  )
 }

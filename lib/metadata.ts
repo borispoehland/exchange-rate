@@ -1,5 +1,5 @@
-import { ICurrency } from "@/modules/app/schemas/currency";
+import type { ICurrency } from '@/modules/app/schemas/currency'
 
 export function getMetaTitle({ currency }: { currency: ICurrency }) {
-  return `Convert ${currency}`;
+  return `Convert ${currency}`
 }

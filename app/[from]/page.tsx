@@ -1,32 +1,34 @@
-import { AppAwait } from "@/components/AppAwait";
-import { AppError } from "@/components/AppError";
-import { AppLoading } from "@/components/AppLoading";
-import { getMetaTitle } from "@/lib/metadata";
-import { awaitParams } from "@/lib/params";
-import { IWithGenericParams } from "@/lib/types";
-import { CurrencyPage } from "@/modules/app/components/CurrencyPage";
-import { currencies, CurrencySchema } from "@/modules/app/schemas/currency";
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
-import { safeParse } from "zod";
+import { Suspense } from 'react'
+import { notFound } from 'next/navigation'
 
-type IProps = IWithGenericParams<{ from: string }>;
+import { safeParse } from 'zod'
+
+import { AppAwait } from '@/components/AppAwait'
+import { AppError } from '@/components/AppError'
+import { AppLoading } from '@/components/AppLoading'
+import { getMetaTitle } from '@/lib/metadata'
+import { awaitParams } from '@/lib/params'
+import type { IWithGenericParams } from '@/lib/types'
+import { CurrencyPage } from '@/modules/app/components/CurrencyPage'
+import { currencies, CurrencySchema } from '@/modules/app/schemas/currency'
+
+type IProps = IWithGenericParams<{ from: string }>
 
 export async function generateMetadata({ params }: IProps) {
-  const { from } = await params;
-  const result = safeParse(CurrencySchema, from);
+  const { from } = await params
+  const result = safeParse(CurrencySchema, from)
   if (!result.success) {
-    return notFound();
+    return notFound()
   }
   return {
     title: getMetaTitle({ currency: result.data }),
-  };
+  }
 }
 
 export function generateStaticParams() {
   return currencies.map((item) => {
-    return { from: item };
-  });
+    return { from: item }
+  })
 }
 
 export default function Page({ params }: IProps) {
@@ -34,16 +36,16 @@ export default function Page({ params }: IProps) {
     <Suspense fallback={<AppLoading />}>
       <AppAwait promise={awaitParams({ params })}>
         {(data) => {
-          if (data.status === "error") {
-            return <AppError error={data.error} />;
+          if (data.status === 'error') {
+            return <AppError error={data.error} />
           }
-          const result = safeParse(CurrencySchema, data.data.from);
+          const result = safeParse(CurrencySchema, data.data.from)
           if (!result.success) {
-            return notFound();
+            return notFound()
           }
-          return <CurrencyPage fromCurrency={result.data} />;
+          return <CurrencyPage fromCurrency={result.data} />
         }}
       </AppAwait>
     </Suspense>
-  );
+  )
 }

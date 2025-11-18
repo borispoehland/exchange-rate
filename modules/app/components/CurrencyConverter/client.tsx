@@ -1,21 +1,27 @@
-"use client";
+'use client'
 
-import { NumberInput } from "@/components/AppNumberInput";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ArrowLeftRight, ChevronDown } from 'lucide-react'
+import { useForm, useWatch } from 'react-hook-form'
+
+import { NumberInput } from '@/components/AppNumberInput'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu'
 import {
   Empty,
   EmptyContent,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty";
+} from '@/components/ui/empty'
 import {
   Form,
   FormControl,
@@ -23,44 +29,44 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/components/ui/input-group";
-import { formatDate, formatNumber } from "@/lib/format";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeftRight, ChevronDown } from "lucide-react";
-import Link from "next/link";
-import { useForm, useWatch } from "react-hook-form";
-import { currencies } from "../../schemas/currency";
-import { ICurrentExchangeRate } from "../../schemas/current";
-import { currencyConverterSchema, ICurrencyConverterSchema } from "./schema";
+} from '@/components/ui/input-group'
+import { formatDate, formatNumber } from '@/lib/format'
+import { cn } from '@/lib/utils'
 
-const MAX_VALUE = 1_000_000;
+import { currencies } from '../../schemas/currency'
+import type { ICurrentExchangeRate } from '../../schemas/current'
+import {
+  currencyConverterSchema,
+  type ICurrencyConverterSchema,
+} from './schema'
 
-const nuggets = [100, 1000, 10_000];
+const MAX_VALUE = 1_000_000
+
+const nuggets = [100, 1000, 10_000]
 
 export function CurrencyConverterClient({
   data,
 }: {
-  data: ICurrentExchangeRate;
+  data: ICurrentExchangeRate
 }) {
   const form = useForm<ICurrencyConverterSchema>({
     resolver: zodResolver(currencyConverterSchema),
     defaultValues: {
-      amount: "",
+      amount: '',
     },
-  });
+  })
 
-  const values = useWatch({ control: form.control });
+  const values = useWatch({ control: form.control })
 
-  const amount = Number(values?.amount) || 1;
+  const amount = Number(values?.amount) || 1
 
   return (
-    <div className="grid md:grid-cols-2 max-w-[900px] w-full mx-auto items-center">
+    <div className="mx-auto grid w-full max-w-[900px] items-center md:grid-cols-2">
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
@@ -103,19 +109,19 @@ export function CurrencyConverterClient({
                                 <Link
                                   href={`/${item}`}
                                   className={cn(
-                                    item === data.base && "font-bold"
+                                    item === data.base && 'font-bold'
                                   )}
                                 >
                                   {item}
                                 </Link>
                               </DropdownMenuItem>
-                            );
+                            )
                           })}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </InputGroupAddon>
                   </InputGroup>
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     {nuggets.map((item) => {
                       return (
                         <Badge key={item} asChild>
@@ -123,13 +129,13 @@ export function CurrencyConverterClient({
                             variant={null}
                             size={null}
                             onClick={() => {
-                              field.onChange(item);
+                              field.onChange(item)
                             }}
                           >
                             {formatNumber({ number: item })}
                           </Button>
                         </Badge>
-                      );
+                      )
                     })}
                   </div>
                   <FormMessage />
@@ -139,29 +145,29 @@ export function CurrencyConverterClient({
           </Form>
         </EmptyContent>
       </Empty>
-      <div className="max-md:border-t flex flex-col items-center text-sm max-md:w-2/3 max-md:mx-auto max-md:pt-4">
+      <div className="flex flex-col items-center text-sm max-md:mx-auto max-md:w-2/3 max-md:border-t max-md:pt-4">
         <span className="text-muted-foreground">
           As of {formatDate({ date: new Date(data.date) })}:
         </span>
         {Object.keys(data.rates).map((item) => {
-          const rate = data.rates[item as keyof typeof data.rates] ?? 0;
+          const rate = data.rates[item as keyof typeof data.rates] ?? 0
 
           return (
             <div key={item}>
               <span className="font-medium">
                 {formatNumber({ number: amount })} {data.base}
-              </span>{" "}
-              equals{" "}
+              </span>{' '}
+              equals{' '}
               <span className="font-medium">
                 {formatNumber({
                   number: rate * amount,
-                })}{" "}
+                })}{' '}
                 {item}
               </span>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 }

@@ -1,11 +1,12 @@
-import { CircleAlert } from "lucide-react";
+import { CircleAlert } from 'lucide-react'
+
 import {
   Empty,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "./ui/empty";
+} from './ui/empty'
 
 export function AppError({ error }: { error: string }) {
   return (
@@ -18,5 +19,5 @@ export function AppError({ error }: { error: string }) {
         <EmptyDescription>{error}</EmptyDescription>
       </EmptyHeader>
     </Empty>
-  );
+  )
 }

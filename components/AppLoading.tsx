@@ -1,5 +1,5 @@
-import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "./ui/empty";
-import { Spinner } from "./ui/spinner";
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from './ui/empty'
+import { Spinner } from './ui/spinner'
 
 export function AppLoading() {
   return (
@@ -11,5 +11,5 @@ export function AppLoading() {
         <EmptyTitle>Loading...</EmptyTitle>
       </EmptyHeader>
     </Empty>
-  );
+  )
 }
